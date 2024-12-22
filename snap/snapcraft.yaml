@@ -1,0 +1,88 @@
+name: stonekingdoms
+#adopt-info: stonekingdoms
+version: git
+summary: An open source fan remake of the famous Stronghold
+description: |
+  Is an open source fan remake of the famous Stronghold from Firefly Studios. 
+  Modern tech stack, support on all three major platforms - Windows, Mac and 
+  Linux and much more - with the original Stronghold art - courtesy of 
+  Firefly Studios and with their permission - all for free.
+  
+  Written with LÖVE
+  
+license: MIT
+base: core24
+grade: stable 
+confinement: strict
+compression: lzo
+
+website: https://stonekingdoms.itch.io/stone-kingdoms-rts
+source-code: https://gitlab.com/stone-kingdoms/stone-kingdoms
+contact: https://github.com/kz6fittycent/stone_kingdoms
+issues: https://github.com/kz6fittycent/stone_kingdoms/issues
+icon: snap/gui/stonekingdoms.png
+donation: https://www.patreon.com/kz6fittycent
+
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+
+package-repositories:
+  - type: apt
+    ppa: bartbes/love-unstable
+
+apps:
+  stonekingdoms:
+    extensions:
+      - gnome
+    command: launch_lovegame
+    environment:
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_ON/pulseaudio:$SNAP"      
+    plugs: 
+      - audio-playback
+      - x11
+      - opengl
+      - unity7
+
+parts:
+  stonekingdoms:
+    source: https://github.com/kz6fittycent/stone_kingdoms
+    source-type: git
+    plugin: nil
+
+    override-pull: |
+      craftctl default
+      craftctl set version="$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)" 
+    
+    override-build: |
+      mkdir -p BUILD
+      cd BUILD
+      wget https://www.tigert.us/index.php/s/sbWJ3pFXK7X6taN/download/StoneKingdoms.love
+      mkdir -p $CRAFT_PART_INSTALL/bin/
+      cp -r * $CRAFT_PART_INSTALL/bin/
+    
+    build-packages:
+      - wget
+      
+    stage-packages:
+      - freeglut3-dev
+      - libgl1-mesa-dri
+      - libglew2.2
+      - lua-socket
+      - libluajit-5.1-2
+      - libsdl2-2.0-0
+      - libopenal1
+      - libilmbase-dev
+      - libdevil1c2
+      - libogg0
+      - libmpg123-0
+      - libtheora0
+      - libvorbisfile3
+      - libmodplug1
+      - libphysfs1
+      - love11.4
+  
+  launcher:
+    plugin: dump
+    source: ./launcher      

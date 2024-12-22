@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=StoneKingdoms
+Comment=An open source fan remake of the famous Stronghold
+Exec=stonekingdoms
+Icon=${SNAP}/meta/gui/stonekingdoms.png
+Terminal=false
+Type=Application
+Categories=Game;Simulation;
+GenericName=
+Keywords=game
